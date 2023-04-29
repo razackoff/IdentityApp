@@ -13,31 +13,31 @@ namespace IdentityApp.Authorization
         public static OperationAuthorizationRequirement Read =
             new OperationAuthorizationRequirement
             {
-                Name = Constants.CreateOperationName
+                Name = Constants.ReadOperationName
             };
 
         public static OperationAuthorizationRequirement Update =
             new OperationAuthorizationRequirement
             {
-                Name = Constants.CreateOperationName
+                Name = Constants.UpdateOperationName
             };
 
         public static OperationAuthorizationRequirement Delete =
             new OperationAuthorizationRequirement
             {
-                Name = Constants.CreateOperationName
+                Name = Constants.DeleteOperationName
             };
 
         public static OperationAuthorizationRequirement Approved =
             new OperationAuthorizationRequirement
             {
-                Name = Constants.CreateOperationName
+                Name = Constants.ApprovedOperationName
             };
 
         public static OperationAuthorizationRequirement Rejected =
             new OperationAuthorizationRequirement
             {
-                Name = Constants.CreateOperationName
+                Name = Constants.RejectedOperationName
             };
     }
 
