@@ -1,3 +1,4 @@
+using IdentityApp.Authorization;
 using IdentityApp.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -30,12 +31,14 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
 });
+
+builder.Services.AddScoped<IAuthorizationHandler, InvoiceCreatorAuthorizationHandler>(); 
 
 var app = builder.Build();
 
