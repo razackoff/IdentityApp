@@ -11,6 +11,8 @@ using IdentityApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using IdentityApp.Authorization;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace IdentityApp.Pages.Invoices
 {
@@ -23,7 +25,7 @@ namespace IdentityApp.Pages.Invoices
         }
 
         [BindProperty]
-        public Invoice Invoice { get; set; } = default!;
+        public Invoice Invoice { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -32,12 +34,15 @@ namespace IdentityApp.Pages.Invoices
                 return NotFound();
             }
 
-            var Invoice = await Context.Invoice.FirstOrDefaultAsync(
+            var invoice = await Context.Invoice.FirstOrDefaultAsync(
                 m => m.InvoiceId == id);
-            if (Invoice == null)
+            
+            if (invoice == null)
             {
                 return NotFound();
             }
+
+            Invoice = invoice;
 
             var isAuthorizated = await AuthorizationService.AuthorizeAsync(
                 User, Invoice, InvoiceOperations.Update);
@@ -52,22 +57,26 @@ namespace IdentityApp.Pages.Invoices
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            var Invoice = await Context.Invoice
+
+            var invoice = await Context.Invoice
                 .SingleOrDefaultAsync(m => m.InvoiceId == id);
 
-            if(Invoice == null) 
+            if(invoice == null) 
             {
                 return NotFound();
             }
 
+            Invoice.CreatorId = invoice.CreatorId;  
+            Invoice.InvoiceId = invoice.InvoiceId;  
+
             var isAuthorizated = await AuthorizationService.AuthorizeAsync(
                 User, Invoice, InvoiceOperations.Update);
-
+/*
             if (isAuthorizated.Succeeded == false)
             {
                 return Forbid();
             }
-
+*/
             Context.Attach(Invoice).State = EntityState.Modified;
 
             try
