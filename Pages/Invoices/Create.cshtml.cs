@@ -9,6 +9,7 @@ using IdentityApp.Data;
 using IdentityApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using IdentityApp.Authorization;
 
 namespace IdentityApp.Pages.Invoices
 {
@@ -35,9 +36,14 @@ namespace IdentityApp.Pages.Invoices
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Invoice == null || Invoice == null)
+            Invoice.CreatorId = UserManager.GetUserId(User);
+
+            var isAuthorizated = await AuthorizationService.AuthorizeAsync(
+                User, Invoice, InvoiceOperations.Create);   
+
+            if(isAuthorizated.Succeeded == false) 
             {
-                return Page();
+                return Forbid();
             }
 
             Context.Invoice.Add(Invoice);
