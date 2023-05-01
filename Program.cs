@@ -3,8 +3,6 @@ using IdentityApp.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +43,8 @@ builder.Services.AddAuthorization(options =>
         .Build();
 });
 
-builder.Services.AddScoped<IAuthorizationHandler, InvoiceCreatorAuthorizationHandler>(); 
+builder.Services.AddScoped<IAuthorizationHandler, InvoiceCreatorAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, InvoiceManagerAuthorizationHandler>
 
 var app = builder.Build();
 
