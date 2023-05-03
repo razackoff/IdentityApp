@@ -126,6 +126,8 @@
 
 Razakov Firuz:  razackof@gmail.com
 
+Telegram: t.me/UNFAZEDG
+
 Ссылка на проект: [https://github.com/razackoff/IdentityApp](https://github.com/razackoff/IdentityApp)
 
 
