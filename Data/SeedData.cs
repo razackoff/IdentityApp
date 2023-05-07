@@ -9,7 +9,7 @@ namespace IdentityApp.Data
 
         public static async Task Initialize(
             IServiceProvider serviceProvider,
-            string password = "Test@1234")
+            string password)
         {
             using(var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
@@ -17,6 +17,10 @@ namespace IdentityApp.Data
                 //manager
                 var managerUid = await EnsureUser(serviceProvider, "manager@demo.com", password);
                 await EnsureRole(serviceProvider, managerUid, Constants.InvoiceManagersRole);
+
+                //administrator
+                var adminUid = await EnsureUser(serviceProvider, "admin@demo.com", password);
+                await EnsureRole(serviceProvider, adminUid, Constants.InvoiceAdminRole);
             }
         }
 

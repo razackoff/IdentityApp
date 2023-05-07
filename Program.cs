@@ -45,13 +45,20 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddScoped<IAuthorizationHandler, InvoiceCreatorAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, InvoiceManagerAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, InvoiceAdminAuthorizationHandler>();
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await SeedData.Initialize(services);
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+
+    var seedUserPass = builder.Configuration.GetValue<string>("SeedUserPass");
+
+    await SeedData.Initialize(services, seedUserPass);
 }
 
 // Configure the HTTP request pipeline.

@@ -66,17 +66,18 @@ namespace IdentityApp.Pages.Invoices
                 return NotFound();
             }
 
-            Invoice.CreatorId = invoice.CreatorId;  
-            Invoice.InvoiceId = invoice.InvoiceId;  
+            Invoice.CreatorId = invoice.CreatorId; 
 
             var isAuthorizated = await AuthorizationService.AuthorizeAsync(
                 User, Invoice, InvoiceOperations.Update);
-/*
+
             if (isAuthorizated.Succeeded == false)
             {
                 return Forbid();
             }
-*/
+
+            Invoice.Status = invoice.Status;
+
             Context.Attach(Invoice).State = EntityState.Modified;
 
             try
